@@ -1,17 +1,37 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Lightning from './Lightning';
+
+const STRIKE_INTERVAL = 6000;
 
 export default function Hero() {
   const [strikeKey, setStrikeKey] = useState(0);
   const [soundEnabled, setSoundEnabled] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Первый удар при загрузке страницы
+  // Запустить цикл молний
+  const startStrikeLoop = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    intervalRef.current = setInterval(() => {
+      setStrikeKey((prev) => prev + 1);
+    }, STRIKE_INTERVAL);
+  }, []);
+
+  // Первый удар + запуск цикла при загрузке
   useEffect(() => {
     setStrikeKey(1);
-  }, []);
+    startStrikeLoop();
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [startStrikeLoop]);
 
   const handleSoundToggle = () => {
     const audio = audioRef.current;
@@ -27,6 +47,8 @@ export default function Hero() {
       setSoundEnabled(true);
       // Перезапуск молний синхронно со звуком
       setStrikeKey((prev) => prev + 1);
+      // Перезапустить цикл - следующий удар через STRIKE_INTERVAL от клика
+      startStrikeLoop();
     }
   };
 
