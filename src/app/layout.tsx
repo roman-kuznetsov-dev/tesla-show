@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Manrope } from 'next/font/google';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 import './globals.css';
 import '@fontsource/unbounded/400.css';
 import '@fontsource/unbounded/700.css';
@@ -14,7 +16,7 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: 'Тесла шоу Без ПРОводов — электрическое шоу на праздник',
   description:
-    'Захватывающее Тесла-шоу с молниями для свадеб, корпоративов и дней рождения. 500 000 вольт, музыка, свет и восторг гостей.',
+    'Захватывающее Тесла-шоу с молниями, от которого захватывает дух!',
   openGraph: {
     title: 'Тесла шоу Без ПРОводов',
     description: 'Электрическое шоу с молниями на ваш праздник',
@@ -31,7 +33,9 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className={` ${manrope.variable} antialiased`}>
-        {children}
+        <Header />
+        <main className="pt-16">{children}</main>
+        <Footer />
       </body>
     </html>
   );
