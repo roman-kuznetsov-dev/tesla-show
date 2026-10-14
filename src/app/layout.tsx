@@ -1,13 +1,9 @@
 import type { Metadata } from 'next';
-import { Unbounded, Manrope } from 'next/font/google';
+import { Manrope } from 'next/font/google';
 import './globals.css';
-
-const unbounded = Unbounded({
-  variable: '--font-heading',
-  subsets: ['cyrillic', 'latin'],
-  weight: ['400', '700', '900'],
-  display: 'swap',
-});
+import '@fontsource/unbounded/400.css';
+import '@fontsource/unbounded/700.css';
+import '@fontsource/unbounded/900.css';
 
 const manrope = Manrope({
   variable: '--font-body',
@@ -34,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={`${unbounded.variable} ${manrope.variable} antialiased`}>
+      <body className={` ${manrope.variable} antialiased`}>
         {children}
       </body>
     </html>
