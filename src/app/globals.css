@@ -170,3 +170,17 @@ h1, h2, h3, h4, h5, h6 {
 .reveal-stagger.reveal--visible > *:nth-child(5) { transition-delay: 1s; }
 .reveal-stagger.reveal--visible > *:nth-child(6) { transition-delay: 1.2s; }
 .reveal-stagger.reveal--visible > *:nth-child(7) { transition-delay: 1.4s; }
+
+/* === Embla Carousel === */
+.embla {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+}
+
+.embla__slide {
+  flex: 0 0 auto;
+  min-width: 0;
+}
