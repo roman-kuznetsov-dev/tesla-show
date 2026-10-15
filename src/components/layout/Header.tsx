@@ -7,7 +7,7 @@ import { useState } from 'react';
 const NAV = [
   { href: '#about', label: 'О шоу' },
   { href: '#features', label: 'Что входит' },
-  { href: '#gallery', label: 'Видео' },
+  { href: '#gallery', label: 'Галерея' },
   { href: '#reviews', label: 'Отзывы' },
   { href: '#faq', label: 'FAQ' },
   { href: '#contact', label: 'Контакты' },

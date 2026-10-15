@@ -82,7 +82,7 @@ export default function Hero() {
             href="#gallery"
             className="bg-primary text-background px-8 py-4 rounded-full font-semibold text-lg hover:bg-opacity-90 transition-all hover:scale-105"
           >
-            Смотреть видео
+            Галерея
           </a>
 
           <button
