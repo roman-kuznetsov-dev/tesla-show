@@ -8,8 +8,43 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { Play } from 'lucide-react';
 import Modal from '@/components/ui/Modal';
 import { useInView } from '@/hooks/useInView';
-import { mainVideo, extraVideos, type Video } from '@/data/videos';
+import { videos, type Video } from '@/data/videos';
 import { galleryPhotos } from '@/data/gallery';
+
+function VideoPoster({
+  video,
+  priority = false,
+  sizes = '100vw',
+  alt = '',
+}: {
+  video: Video;
+  priority?: boolean;
+  sizes?: string;
+  alt?: string;
+}) {
+  return (
+    <div className="absolute inset-0">
+      <Image
+        src={video.poster}
+        alt=""
+        fill
+        sizes={sizes}
+        aria-hidden="true"
+        className="object-cover blur-2xl scale-110 opacity-60"
+      />
+      <Image
+        src={video.poster}
+        alt={alt || video.title}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className="object-contain"
+      />
+    </div>
+  );
+}
+
+
 
 export default function VideoGallery() {
   const { ref, inView } = useInView<HTMLElement>();
@@ -25,6 +60,10 @@ export default function VideoGallery() {
 
   const openVideo = (video: Video) => setActiveVideo(video);
   const closeVideo = () => setActiveVideo(null);
+
+  const activeAspect = activeVideo?.orientation === 'portrait'
+    ? 'max-h-[85vh] w-auto aspect-[9/16]'
+    : 'w-full aspect-video';
 
   return (
     <section
@@ -51,58 +90,21 @@ export default function VideoGallery() {
           Как это выглядит <span className="text-primary">вживую</span>
         </h2>
 
-        {/* === ГЛАВНОЕ ВИДЕО === */}
-        <div className="mb-12 md:mb-16">
-          <button
-            onClick={() => openVideo(mainVideo)}
-            className="group relative block w-full aspect-video rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 hover:border-primary/40 hover:shadow-[0_0_60px_rgba(0,217,255,0.2)]"
-            aria-label={`Смотреть видео: ${mainVideo.title}`}
-          >
-            <Image
-              src={mainVideo.poster}
-              alt={mainVideo.title}
-              fill
-              sizes="(max-width: 1024px) 100vw, 1200px"
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-
-            {/* Play */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-primary/90 text-background flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-                <Play size={32} fill="currentColor" className="ml-1" />
-              </div>
-            </div>
-
-            {/* Название */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-left">
-              <p className="text-xs md:text-sm uppercase tracking-widest text-primary mb-1">
-                Главное видео
-              </p>
-              <h3 className="font-heading text-xl md:text-2xl font-bold">
-                {mainVideo.title}
-              </h3>
-            </div>
-          </button>
-        </div>
-
-        {/* === ДОПОЛНИТЕЛЬНЫЕ ВИДЕО === */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 md:mb-24">
-          {extraVideos.map((video) => (
+        {/* === ВИДЕО — СЕТКА === */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 md:mb-24">
+          {videos.map((video, index) => (
             <button
               key={video.id}
               onClick={() => openVideo(video)}
               className="group relative block w-full aspect-video rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 hover:border-primary/40 hover:shadow-[0_0_40px_rgba(0,217,255,0.15)]"
               aria-label={`Смотреть видео: ${video.title}`}
             >
-              <Image
-                src={video.poster}
-                alt={video.title}
-                fill
-                sizes="(max-width: 768px) 100vw, 600px"
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+              <VideoPoster
+                video={video}
+                priority={index === 0}
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
               />
+
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
               <div className="absolute inset-0 flex items-center justify-center">
@@ -179,16 +181,18 @@ export default function VideoGallery() {
         ariaLabel={activeVideo ? `Видео: ${activeVideo.title}` : 'Видео'}
       >
         {activeVideo && (
-          <video
+          <div className="flex items-center justify-center">
+            <video
             src={activeVideo.src}
             poster={activeVideo.poster}
             controls
             autoPlay
             playsInline
-            className="w-full aspect-video rounded-2xl bg-black"
+            className={`rounded-2xl bg-black ${activeAspect}`}
           >
             Ваш браузер не поддерживает видео.
-          </video>
+            </video>
+          </div>
         )}
       </Modal>
 
