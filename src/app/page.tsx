@@ -4,6 +4,7 @@ import Features from '@/components/sections/Features';
 import VideoGallery from '@/components/sections/VideoGallery';
 import Reviews from '@/components/sections/Reviews';
 import FAQ from '@/components/sections/FAQ';
+import HowToOrder from '@/components/sections/HowToOrder';
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <VideoGallery />
       <Reviews />
       <FAQ />
+      <HowToOrder />
     </>
   );
 }
