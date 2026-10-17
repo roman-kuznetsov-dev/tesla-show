@@ -20,10 +20,10 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b border-white/10 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-xl transition-all duration-300 ${
         scrolled
-        ?'bg-background/95 border-white/20 shadow-[0_4px_20pxrgba(0,217,255,0.1)]'
-        : 'bg-background/40 border-transparent'
+        ?'bg-background/70 shadow-[0_4px_20px_rgba(0,217,255,0.1)]'
+        : 'bg-transparent'
       }`}
     >  
       <nav className="container mx-auto flex items-center h-16 px-4 gap-4">
