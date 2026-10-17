@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useScrollThreshold } from '@/hooks/useScrollThreshold';
 
 const NAV = [
   { href: '#about', label: 'О шоу' },
@@ -15,9 +16,16 @@ const NAV = [
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const scrolled = useScrollThreshold(20);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/10">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b border-white/10 transition-all duration-300 ${
+        scrolled
+        ?'bg-background/95 border-white/20 shadow-[0_4px_20pxrgba(0,217,255,0.1)]'
+        : 'bg-background/40 border-transparent'
+      }`}
+    >  
       <nav className="container mx-auto flex items-center h-16 px-4 gap-4">
         <Link href="/" className="flex items-center gap-3 shrink-0">
           <Image
