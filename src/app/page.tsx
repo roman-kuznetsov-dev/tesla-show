@@ -5,6 +5,7 @@ import VideoGallery from '@/components/sections/VideoGallery';
 import Reviews from '@/components/sections/Reviews';
 import FAQ from '@/components/sections/FAQ';
 import HowToOrder from '@/components/sections/HowToOrder';
+import Contacts from '@/components/sections/Contacts';
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <Reviews />
       <FAQ />
       <HowToOrder />
+      <Contacts />
     </>
   );
 }
