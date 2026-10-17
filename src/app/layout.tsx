@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Manrope } from 'next/font/google';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import FloatingCTA from '@/components/ui/FloatingCTA';
 import './globals.css';
 import '@fontsource/unbounded/400.css';
 import '@fontsource/unbounded/700.css';
@@ -36,6 +37,7 @@ export default function RootLayout({
         <Header />
         <main className="pt-16">{children}</main>
         <Footer />
+        <FloatingCTA />
       </body>
     </html>
   );
