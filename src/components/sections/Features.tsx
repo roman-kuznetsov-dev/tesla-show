@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useInView } from '@/hooks/useInView';
 import { features } from '@/data/features';
 
@@ -38,30 +39,46 @@ export default function Features() {
             inView ? 'reveal--visible' : ''
           }`}
         >
-          {features.map((feature) => {
-            const Icon = feature.icon;
-            return (
-              <div
-                key={feature.title}
-                className="group relative bg-gradient-to-b from-surface to-[#1a1a2e] border border-white/5 rounded-2xl p-6 md:p-8 transition-all duration-300 hover:-translate-y-2 hover:border-primary/30 hover:shadow-[0_0_40px_rgba(0,217,255,0.15)]"
-              >
-                {/* Иконка */}
-                <div className="mb-6 inline-flex items-center justify-center w-14 h-14 rounded-xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary/20">
-                  <Icon size={28} strokeWidth={1.75} aria-hidden="true" />
-                </div>
+          {features.map((feature, index) => (
+            <div
+              key={feature.title}
+              className="group relative bg-gradient-to-b from-surface to-[#1a1a2e] border border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:border-primary/30 hover:shadow-[0_0_40px_rgba(0,217,255,0.15)]"
+            >
+              {/* Фото */}
+              <div className="relative aspect-video overflow-hidden">
+                {/* Размытый фон - та же картинка, заполняет контейнер */}
+                <Image
+                  src={feature.image}
+                  alt=""
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"
+                  aria-hidden="true"
+                  className="object-cover blur-2xl scale-110 opacity-60"
+                />
+                {/* Чёткое фото - целиком, без обрезки */}
+                <Image
+                  src={feature.image}
+                  alt={feature.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 400px"  
+                  priority={index < 3}
+                  className="object-contain transition-transform duration-700 group-hover:scale-105"
+                />
+                {/* Затемнение снизу для плавного перехода */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a2e] via-transparent to-transparent" />
+              </div>
 
-                {/* Заголовок */}
+              {/* Текст */}
+              <div className="p-6 md:p-8">
                 <h3 className="font-heading text-xl font-bold mb-3">
                   {feature.title}
                 </h3>
-
-                {/* Описание */}
                 <p className="text-muted text-sm leading-relaxed">
                   {feature.description}
                 </p>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </section>
