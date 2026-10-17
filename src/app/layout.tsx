@@ -3,6 +3,7 @@ import { Manrope } from 'next/font/google';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import FloatingCTA from '@/components/ui/FloatingCTA';
+import ScrollToTop from '@/components/ui/ScrollToTop';
 import './globals.css';
 import '@fontsource/unbounded/400.css';
 import '@fontsource/unbounded/700.css';
@@ -38,6 +39,7 @@ export default function RootLayout({
         <main className="pt-16">{children}</main>
         <Footer />
         <FloatingCTA />
+        <ScrollToTop />
       </body>
     </html>
   );
