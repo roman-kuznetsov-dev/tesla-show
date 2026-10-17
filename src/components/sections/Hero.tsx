@@ -13,7 +13,7 @@ export default function Hero() {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Параллакс: молнии и фон двигаются медленнее контента
-  const lightningParallax = useParallax({ speed: 0.3 });
+  const lightningParallax = useParallax({ speed: 0.5 });
   const bgParallax = useParallax({ speed: 0.15 });
 
   // Запустить цикл молний
