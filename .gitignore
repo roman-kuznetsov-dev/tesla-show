@@ -52,3 +52,5 @@ prisma/dev.db-journal
 .claude/
 .cursor/
 .devin/
+
+.wrangler/
