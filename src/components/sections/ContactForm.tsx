@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Send } from 'lucide-react';
+import SuccessCheck from '@/components/ui/SuccessCheck';
 
 type FormState = {
   name: string;
@@ -85,22 +86,20 @@ export default function ContactForm() {
   };
 
   if (status === 'success') {
-    return (
-      <div className="bg-gradient-to-b from-surface to-[#1a1a2e] border border-primary/30 rounded-2xl p-8 md:p-12 text-center transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_0_40px_rgba(0,217,255,0.15)]">
-        <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-primary/20 flex items-center justify-center">
-          <span className="text-3xl">✅</span>
-        </div>
-        <h3 className="font-heading text-2xl font-bold mb-3">Спасибо за заявку!</h3>
-        <p className="text-muted mb-6">Мы свяжемся с вами в ближайшее время.</p>
-        <button
-          onClick={() => setStatus('idle')}
-          className="text-primary hover:text-primary/80 transition-colors text-sm"
-        >
-          Отправить ещё одну заявку
-        </button>
-      </div>
-    );
-  }
+  return (
+    <div className="success-block bg-gradient-to-b from-surface to-[#1a1a2e] border border-primary/30 rounded-2xl p-8 md:p-12 text-center transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_0_40px_rgba(0,217,255,0.15)]">
+      <SuccessCheck />
+      <h3 className="font-heading text-2xl font-bold mb-3">Спасибо за заявку!</h3>
+      <p className="text-muted mb-6">Мы свяжемся с вами в ближайшее время.</p>
+      <button
+        onClick={() => setStatus('idle')}
+        className="text-primary hover:text-primary/80 transition-colors text-sm"
+      >
+        Отправить ещё одну заявку
+      </button>
+    </div>
+  );
+}
 
   return (
     <form
