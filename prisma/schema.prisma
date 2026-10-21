@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client"
+  output = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Lead {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String
+  date      String?
+  eventType String?
+  message   String?
+  createdAt DateTime @default(now())
+}

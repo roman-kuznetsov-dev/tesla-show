@@ -208,3 +208,64 @@ h1, h2, h3, h4, h5, h6 {
     animation: none;
   }
 }
+
+/* === Success: круг === */
+@keyframes success-circle-draw {
+  from {
+    stroke-dasharray: 151;
+    stroke-dashoffset: 151;
+  }
+  to {
+    stroke-dasharray: 151;
+    stroke-dashoffset: 0;
+  }
+}
+
+.success-circle {
+  stroke-dasharray: 151;
+  stroke-dashoffset: 151;
+  animation: success-circle-draw 0.6s ease-out forwards;
+}
+
+/* === Success: галочка === */
+@keyframes success-check-draw {
+  from {
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+  }
+  to {
+    stroke-dasharray: 48;
+    stroke-dashoffset: 0;
+  }
+}
+
+.success-check {
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: success-check-draw 0.4s ease-out 0.6s forwards;
+}
+
+/* === Success: появление блока === */
+@keyframes success-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.success-block {
+  animation: success-fade-in 0.5s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .success-circle,
+  .success-check,
+  .success-block {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

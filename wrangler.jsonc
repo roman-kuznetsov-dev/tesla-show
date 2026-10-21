@@ -1,0 +1,5 @@
+{
+  "name": "telegram-proxy",
+  "compatibility_date": "2026-10-12",
+  "main": "telegram-proxy.js"
+}
