@@ -70,12 +70,28 @@ ${lead.date ? `<b>Дата:</b> ${lead.date}\n` : ''}${lead.eventType ? `<b>Ти
   }
 }
 
-export async function GET() {
-  // Только для локальной разработки
-  if (process.env.NODE_ENV === 'production') {
-    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+export async function GET(req: Request) {
+  // Проверка пароля (работает всегда, даже если форма выключена)
+  const expected = process.env.ADMIN_PASSWORD;
+
+  if (!expected) {
+    return NextResponse.json(
+      { error: 'ADMIN_PASSWORD не задан в .env' },
+      { status: 500 }
+    );
   }
 
+  const authHeader = req.headers.get('authorization');
+  const provided = authHeader?.replace('Bearer ', '').trim();
+
+  if (provided !== expected) {
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401 }
+    );
+  }
+
+  // Дальше — существующая логика
   if (process.env.NEXT_PUBLIC_ENABLE_LEADS !== 'true') {
     return NextResponse.json({ error: 'Функционал отключён' }, { status: 503 });
   }
