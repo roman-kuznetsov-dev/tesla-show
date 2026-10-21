@@ -54,3 +54,5 @@ prisma/dev.db-journal
 .devin/
 
 .wrangler/
+
+src/generated/
