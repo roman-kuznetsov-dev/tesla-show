@@ -4,6 +4,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import FloatingCTA from '@/components/ui/FloatingCTA';
 import ScrollToTop from '@/components/ui/ScrollToTop';
+import ReadingProgress from '@/components/ui/ReadingProgress';
 import './globals.css';
 import '@fontsource/unbounded/400.css';
 import '@fontsource/unbounded/700.css';
@@ -36,6 +37,7 @@ export default function RootLayout({
     <html lang="ru">
       <body className={` ${manrope.variable} antialiased`}>
         <Header />
+        <ReadingProgress />
         <main className="pt-16">{children}</main>
         <Footer />
         <FloatingCTA />
