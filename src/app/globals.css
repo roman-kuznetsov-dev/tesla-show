@@ -36,9 +36,60 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Отключаем плавный скролл */
   html {
     scroll-behavior: auto;
   }
+
+  /* Reveal: только fade, без сдвига */
+  .reveal {
+    transform: none !important;
+    transition: opacity 0.3s ease !important;
+  }
+
+  .reveal-stagger > * {
+    transform: none !important;
+    transition: opacity 0.3s ease !important;
+  }
+
+  /* Параллакс: отключаем */
+  [style*="translateY"] {
+    transform: none !important;
+  }
+
+  /* Молнии: статично */
+  .lightning {
+    animation: none !important;
+    opacity: 0.4 !important;
+  }
+
+  /* Hero fade-in: без сдвига */
+  .hero-fade {
+    transform: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  /* Пульсация FloatingCTA: отключаем */
+  .floating-cta {
+    animation: none !important;
+  }
+
+  /* Success-анимация: сразу видно */
+  .success-circle,
+  .success-check,
+  .success-block {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  /* :active — без scale */
+  button:active:not(:disabled),
+  a:active {
+    transform: none !important;
+  }
+
+  /* Общее правило для остальных transition — мгновенно */
   *,
   *::before,
   *::after {
@@ -46,6 +97,7 @@ h1, h2, h3, h4, h5, h6 {
     transition-duration: 0.01ms !important;
   }
 }
+
 /* === Hero: молнии === */
 .lightning-layer {
   --lightning-duration: 1.5s;
@@ -143,7 +195,7 @@ h1, h2, h3, h4, h5, h6 {
 .reveal {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .reveal.reveal--visible {
@@ -155,7 +207,7 @@ h1, h2, h3, h4, h5, h6 {
 .reveal-stagger > * {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
 }
 
 .reveal-stagger.reveal--visible > * {
