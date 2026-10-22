@@ -269,3 +269,38 @@ h1, h2, h3, h4, h5, h6 {
     stroke-dashoffset: 0;
   }
 }
+
+/* === scroll-margin-top: чтобы фиксированный Header не перекрывал заголовки === */
+section[id] {
+  scroll-margin-top: 5rem; /* 80px = 64px header + 16px запас */
+}
+
+/* === focus-visible: видимый фокус для клавиатуры === */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Убираем фокус при клике мышью (только клавиатура) */
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+select:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* === active: тактильная отдача при клике === */
+button:active:not(:disabled),
+a:active {
+  transform: scale(0.95);
+}
+
+/* Чтобы transition не мешал :active — только для transform */
+button,
+a {
+  transition-property: color, background-color, border-color, box-shadow, transform;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
