@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useScrollThreshold } from '@/hooks/useScrollThreshold';
+import { useActiveSection } from '@/hooks/useActiveSection';
 
 const NAV = [
   { href: '#about', label: 'О шоу' },
@@ -14,9 +15,12 @@ const NAV = [
   { href: '#contact', label: 'Контакты' },
 ];
 
+const SECTION_IDS = NAV.map((item) => item.href.replace('#', ''));
+
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const scrolled = useScrollThreshold(20);
+  const activeSection = useActiveSection(SECTION_IDS);
 
   // Блокировка скролла body, пока меню открыто
   useEffect(() => {
@@ -57,8 +61,8 @@ export default function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-xl transition-all duration-300 ${scrolled
-          ? 'bg-background/70 shadow-[0_4px_20px_rgba(0,217,255,0.1)]'
-          : 'bg-transparent'
+        ? 'bg-background/70 shadow-[0_4px_20px_rgba(0,217,255,0.1)]'
+        : 'bg-transparent'
         }`}
     >
       <nav className="container mx-auto flex items-center h-16 px-4 gap-4">
@@ -79,16 +83,22 @@ export default function Header() {
         </Link>
 
         <ul className="hidden lg:flex gap-6 ml-auto items-center">
-          {NAV.map((item) => (
-            <li key={item.href}>
-              <a
-                href={item.href}
-                className="text-sm hover:text-primary transition-colors"
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
+          {NAV.map((item) => {
+            const isActive = activeSection === item.href.replace('#', '');
+            return (
+              <li key={item.href}>
+                <a
+                  href={item.href}
+                  className={`text-sm transition-colors ${isActive
+                      ? 'text-primary font-semibold'
+                      : 'hover:text-primary'
+                    }`}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })}
           <li>
             <a
               href="tel:+79061744325"
@@ -123,22 +133,26 @@ export default function Header() {
       {/* Мобильное меню — всегда в DOM, плавно открывается/закрывается */}
       <div
         className={`lg:hidden bg-surface border-t border-white/10 overflow-hidden transition-all duration-300 ease-out ${isOpen
-            ? 'max-h-[500px] opacity-100'
-            : 'max-h-0 opacity-0 border-t-0'
+          ? 'max-h-[500px] opacity-100'
+          : 'max-h-0 opacity-0 border-t-0'
           }`}
       >
         <ul className="flex flex-col gap-4 px-4 py-4">
-          {NAV.map((item) => (
-            <li key={item.href}>
-              <a
-                href={item.href}
-                onClick={() => setIsOpen(false)}
-                className="block text-lg hover:text-primary"
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
+          {NAV.map((item) => {
+            const isActive = activeSection === item.href.replace('#', '');
+            return (
+              <li key={item.href}>
+                <a
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`block text-lg transition-colors ${isActive ? 'text-primary font-semibold' : 'hover:text-primary'
+                    }`}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })}
           <li>
             <a
               href="tel:+79061744325"
