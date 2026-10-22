@@ -67,18 +67,18 @@ export default function Header() {
     >
       <nav className="container mx-auto flex items-center h-16 px-4 gap-4">
         <Link href="/" className="flex items-center gap-3 shrink-0">
-          <Image
-            src="/images/logo.png"
-            alt="Тесла шоу Без ПРОводов"
-            width={40}
-            height={40}
-            className="w-10 h-10 object-contain"
-            priority
-          />
-          <span className="font-heading font-bold text-sm md:text-base leading-tight">
-            Тесла шоу
-            <br />
-            <span className="text-primary">Без ПРОводов</span>
+          <div className="relative w-12 h-12 md:w-14 md:h-14 shrink-0 drop-shadow-[0_0_15px_rgba(0,217,255,0.6)]">
+            <Image
+              src="/images/logo.png"
+              alt="Тесла шоу Без ПРОводов"
+              fill
+              className="object-contain [mask-image:radial-gradient(circle,black_45%,transparent_70%)] drop-shadow-[0_0_12px_rgba(0,217,255,0.4)]"
+              priority
+            />
+          </div>
+          <span className="font-heading font-bold text-sm md:text-base leading-tight flex flex-col">
+            <span>Тесла шоу</span>
+            <span className="text-primary tracking-wide">Без ПРОводов</span>
           </span>
         </Link>
 
@@ -90,8 +90,8 @@ export default function Header() {
                 <a
                   href={item.href}
                   className={`text-sm transition-colors ${isActive
-                      ? 'text-primary font-semibold'
-                      : 'hover:text-primary'
+                    ? 'text-primary font-semibold'
+                    : 'hover:text-primary'
                     }`}
                 >
                   {item.label}
