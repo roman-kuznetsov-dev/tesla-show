@@ -56,3 +56,8 @@ prisma/dev.db-journal
 .wrangler/
 
 src/generated/
+
+# Playwright
+playwright-report/
+test-results/
+playwright/.cache
