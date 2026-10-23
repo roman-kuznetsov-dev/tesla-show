@@ -29,16 +29,16 @@ export default function ContactForm() {
   const validate = (): boolean => {
     const newErrors: Partial<FormState> = {};
 
+    // Имя
     const nameTrimmed = form.name.trim();
-
     if (nameTrimmed.length < 2) {
       newErrors.name = 'Имя должно быть не короче 2 символов';
-    } else if (!/^[а-яёА-ЯЁa-zA-Z\s-]+$/.test(nameTrimmed)) {
+    } else if (/[0-9!@#$%^&*()_+={}\[\]|\\:;"'<>,.?\/]/.test(nameTrimmed)) {
       newErrors.name = 'Имя может содержать только буквы, пробелы и дефис';
     }
 
+    // Телефон
     const phoneDigits = form.phone.replace(/\D/g, '');
-
     if (phoneDigits.length < 10) {
       newErrors.phone = 'Телефон должен содержать минимум 10 цифр';
     } else if (phoneDigits.length > 15) {
@@ -86,20 +86,20 @@ export default function ContactForm() {
   };
 
   if (status === 'success') {
-  return (
-    <div className="success-block bg-gradient-to-b from-surface to-[#1a1a2e] border border-primary/30 rounded-2xl p-8 md:p-12 text-center transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_0_40px_rgba(0,217,255,0.15)]">
-      <SuccessCheck />
-      <h3 className="font-heading text-2xl font-bold mb-3">Спасибо за заявку!</h3>
-      <p className="text-muted mb-6">Мы свяжемся с вами в ближайшее время.</p>
-      <button
-        onClick={() => setStatus('idle')}
-        className="text-primary hover:text-primary/80 transition-colors text-sm"
-      >
-        Отправить ещё одну заявку
-      </button>
-    </div>
-  );
-}
+    return (
+      <div className="success-block bg-gradient-to-b from-surface to-[#1a1a2e] border border-primary/30 rounded-2xl p-8 md:p-12 text-center transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_0_40px_rgba(0,217,255,0.15)]">
+        <SuccessCheck />
+        <h3 className="font-heading text-2xl font-bold mb-3">Спасибо за заявку!</h3>
+        <p className="text-muted mb-6">Мы свяжемся с вами в ближайшее время.</p>
+        <button
+          onClick={() => setStatus('idle')}
+          className="text-primary hover:text-primary/80 transition-colors text-sm"
+        >
+          Отправить ещё одну заявку
+        </button>
+      </div>
+    );
+  }
 
   return (
     <form
