@@ -88,9 +88,9 @@ export default function Hero() {
       {/* Контент */}
       <div className="relative z-10 container mx-auto px-4 text-center">
         <h1 className="hero-fade hero-fade-1 font-heading text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
-          Это настоящее
+          Тесла шоу - это
           <br />
-          <span className="text-primary">научное волшебство!</span>
+          <span className="text-primary">настоящее научное волшебство!</span>
         </h1>
 
         <p className="hero-fade hero-fade-2 text-lg md:text-xl text-muted max-w-2xl mx-auto mb-10">
