@@ -5,6 +5,7 @@ import Footer from '@/components/layout/Footer';
 import FloatingCTA from '@/components/ui/FloatingCTA';
 import ScrollToTop from '@/components/ui/ScrollToTop';
 import ReadingProgress from '@/components/ui/ReadingProgress';
+import YandexMetrika from '@/components/ui/YandexMetrika';
 import './globals.css';
 import '@fontsource/unbounded/400.css';
 import '@fontsource/unbounded/700.css';
@@ -58,6 +59,9 @@ export default function RootLayout({
         <Footer />
         <FloatingCTA />
         <ScrollToTop />
+        {process.env.NEXT_PUBLIC_YM_ID && process.env.NODE_ENV !=='development' && (
+          <YandexMetrika id={process.env.NEXT_PUBLIC_YM_ID} />
+        )}
       </body>
     </html>
   );
