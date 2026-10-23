@@ -96,7 +96,11 @@ export default function VideoGallery() {
             <button
               key={video.id}
               onClick={() => openVideo(video)}
-              className="group relative block w-full aspect-video rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 hover:border-primary/40 hover:shadow-[0_0_40px_rgba(0,217,255,0.15)]"
+              className={`group relative block w-full aspect-video rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 hover:border-primary/40 hover:shadow-[0_0_40px_rgba(0,217,255,0.15)] ${
+                index === 2
+                  ?'md:col-span-2 md:max-w-[calc(50%-0.75rem)] md:mx-auto lg:col-span-1 lg:max-w-none'
+                  : ''
+              }`}
               aria-label={`Смотреть видео: ${video.title}`}
             >
               <VideoPoster
