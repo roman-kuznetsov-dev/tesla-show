@@ -31,6 +31,9 @@ jobs:
         run: npx prisma generate
 
       - name: Build project
+        env:
+          NEXT_PUBLIC_ENABLE_LEADS: 'true'
+          NEXT_PUBLIC_SITE_URL: 'http://localhost:3000'
         run: npm run build
 
       - name: Run unit tests
@@ -40,4 +43,7 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run E2E tests
+        env:
+          NEXT_PUBLIC_ENABLE_LEADS: 'true'
+          NEXT_PUBLIC_SITE_URL: 'http://localhost:3000'
         run: npx playwright test      
