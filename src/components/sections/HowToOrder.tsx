@@ -1,10 +1,12 @@
 'use client';
 
 import { useInView } from '@/hooks/useInView';
-import { steps } from '@/data/steps';
+import { stepsDev, stepsProd } from '@/data/steps';
 
 export default function HowToOrder() {
   const { ref, inView } = useInView<HTMLElement>();
+  const leadsEnabled = process.env.NEXT_PUBLIC_ENABLE_LEADS === 'true';
+  const steps = leadsEnabled ? stepsDev : stepsProd;
 
   return (
     <section
