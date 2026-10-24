@@ -1,0 +1,20 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_ENABLE_LEADS: 'false'
+        NEXT_PUBLIC_SITE_URL: 'http://localhost:3000'
+        NEXT_PUBLIC_YM_ID: ''
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: 'file:/app/data/dev.db'
+    volumes:
+      - sqlite-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  sqlite-data:
