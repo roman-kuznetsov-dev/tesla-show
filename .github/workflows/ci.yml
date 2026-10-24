@@ -46,4 +46,7 @@ jobs:
         env:
           NEXT_PUBLIC_ENABLE_LEADS: 'true'
           NEXT_PUBLIC_SITE_URL: 'http://localhost:3000'
-        run: npx playwright test      
+        run: npx playwright test
+
+      - name: Build Docker image
+        run: docker build -t tesla-show:test .        
