@@ -49,4 +49,4 @@ jobs:
         run: npx playwright test
 
       - name: Build Docker image
-        run: docker build -t tesla-show:test        
+        run: docker build -t tesla-show:test .        
