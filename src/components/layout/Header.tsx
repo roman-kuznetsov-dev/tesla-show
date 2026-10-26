@@ -61,9 +61,9 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[150] bg-background/80 transition-all duration-300 ${scrolled
-        ? 'bg-background/70 shadow-[0_4px_20px_rgba(0,217,255,0.1)]'
-        : 'bg-transparent'
+      className={`fixed top-0 left-0 right-0 z-[150] transition-all duration-300 ${scrolled || isOpen
+        ? 'bg-background/95 backdrop-blur-md shadow-lg'
+        : 'bg-gradient-to-b from-background/80 to-transparent'
         }`}
     >
       <nav className="container mx-auto flex items-center h-16 px-4 gap-4 relative z-50">
@@ -112,7 +112,7 @@ export default function Header() {
 
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="lg:hidden ml-auto relative z-[200] flex flex-col justify-center items-center w-10 h-10 gap-[6px]"
+          className="lg:hidden ml-auto relative z-10 flex flex-col justify-center items-center w-10 h-10 gap-[6px]"
           aria-label={isOpen ? 'Закрыть меню' : 'Открыть меню'}
           aria-expanded={isOpen}
         >
