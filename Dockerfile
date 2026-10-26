@@ -47,6 +47,10 @@ COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/prisma.config.ts ./
 
+COPY --from=builder /app/node_modules/sharp ./node_modules/sharp
+
+RUN mkdir -p .next/cache/images && chown -R nextjs:nodejs .next/cache/images
+
 # Создаём папку для БД (volume)
 RUN mkdir -p /app/data && chown -R nextjs:nodejs /app/data
 
