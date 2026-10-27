@@ -205,7 +205,11 @@ export default function VideoGallery() {
         open={lightboxIndex >= 0}
         index={lightboxIndex}
         close={() => setLightboxIndex(-1)}
-        slides={galleryPhotos.map((photo) => ({ src: photo.src, alt: photo.alt }))}
+        slides={galleryPhotos.map((photo) => ({
+          // Передаём путь к нашему API с шириной 1080px
+          src: `/api/image?src=${encodeURIComponent(photo.src)}&w=1080&q=85`,
+          alt: photo.alt,
+         }))}
       />
     </section>
   );
