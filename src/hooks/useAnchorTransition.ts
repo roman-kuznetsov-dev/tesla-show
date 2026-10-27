@@ -3,12 +3,6 @@
 import { useCallback } from 'react';
 import { flushSync } from 'react-dom';
 
-declare global {
-  interface Document {
-    startViewTransition?: (callback: () => void) => { finished: Promise<void> };
-  }
-}
-
 export function useAnchorTransition() {
   return useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, href: string, onClose?: () => void) => {
@@ -30,7 +24,7 @@ export function useAnchorTransition() {
         target.scrollIntoView({ behavior: 'instant' });
       };
 
-      if (document.startViewTransition) {
+      if ('startViewTransition' in document && document.startViewTransition) {
         document.startViewTransition(performScroll);
       } else {
         // Fallback для браузеров без View Transitions
