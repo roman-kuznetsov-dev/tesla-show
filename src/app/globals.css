@@ -356,3 +356,27 @@ a {
   transition-duration: 200ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* === View Transitions: якоря === */
+::view-transition-old(root) {
+  animation: 150ms ease-out both fade-out;
+}
+
+::view-transition-new(root) {
+  animation: 150ms ease-in both fade-in;
+}
+
+@keyframes fade-out {
+  to { opacity: 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

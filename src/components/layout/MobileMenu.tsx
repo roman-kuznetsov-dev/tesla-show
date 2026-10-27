@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useAnchorTransition } from '@/hooks/useAnchorTransition';
 
 type Props = {
   isOpen: boolean;
@@ -12,6 +13,7 @@ type Props = {
 
 export default function MobileMenu({ isOpen, onClose, nav, activeSection }: Props) {
   const [mounted, setMounted] = useState(false);
+  const handleAnchorClick = useAnchorTransition();
 
   // Рендерим портал только после монтирования на клиенте
   useEffect(() => {
@@ -73,7 +75,7 @@ export default function MobileMenu({ isOpen, onClose, nav, activeSection }: Prop
               <li key={item.href}>
                 <a
                   href={item.href}
-                  onClick={onClose}
+                  onClick={(e) => handleAnchorClick(e, item.href, onClose)}
                   className={`block text-lg transition-colors ${
                     isActive ? 'text-primary font-semibold' : 'hover:text-primary'
                   }`}

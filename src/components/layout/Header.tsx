@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useScrollThreshold } from '@/hooks/useScrollThreshold';
 import { useActiveSection } from '@/hooks/useActiveSection';
 import MobileMenu from './MobileMenu';
+import { useAnchorTransition } from '@/hooks/useAnchorTransition';
 
 const NAV = [
   { href: '#about', label: 'О шоу' },
@@ -22,6 +23,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const scrolled = useScrollThreshold(20);
   const activeSection = useActiveSection(SECTION_IDS);
+  const handleAnchorClick = useAnchorTransition();
 
   // Блокировка скролла body, пока меню открыто
   useEffect(() => {
@@ -90,6 +92,7 @@ export default function Header() {
               <li key={item.href}>
                 <a
                   href={item.href}
+                  onClick={(e) => handleAnchorClick(e, item.href)}
                   className={`text-sm transition-colors ${isActive
                     ? 'text-primary font-semibold'
                     : 'hover:text-primary'
