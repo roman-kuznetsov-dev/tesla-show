@@ -55,7 +55,7 @@ export default function MobileMenu({ isOpen, onClose, nav, activeSection }: Prop
     >
       {/* Затемнение фона */}
       <div
-        className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
+        className={`absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300 ${
           isOpen ? 'opacity-100' : 'opacity-0'
         }`}
         onClick={onClose}
@@ -64,7 +64,7 @@ export default function MobileMenu({ isOpen, onClose, nav, activeSection }: Prop
 
       {/* Панель меню — начинается под шапкой */}
       <div
-        className={`absolute top-16 left-0 right-0 bottom-0 bg-black/95 border-t border-white/10 overflow-y-auto transition-all duration-300 ease-out ${
+        className={`absolute top-16 left-0 right-0 bg-black/95 border-t border-white/10 overflow-y-auto transition-all duration-300 ease-out max-h-[calc(100vh-4rem)] ${
           isOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'
         }`}
       >
