@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useScrollThreshold } from '@/hooks/useScrollThreshold';
 import { useActiveSection } from '@/hooks/useActiveSection';
+import MobileMenu from './MobileMenu';
+import { useAnchorTransition } from '@/hooks/useAnchorTransition';
 
 const NAV = [
   { href: '#about', label: 'О шоу' },
@@ -21,6 +23,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const scrolled = useScrollThreshold(20);
   const activeSection = useActiveSection(SECTION_IDS);
+  const handleAnchorClick = useAnchorTransition();
 
   // Блокировка скролла body, пока меню открыто
   useEffect(() => {
@@ -60,12 +63,12 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-xl transition-all duration-300 ${scrolled
-        ? 'bg-background/70 shadow-[0_4px_20px_rgba(0,217,255,0.1)]'
-        : 'bg-transparent'
+      className={`fixed top-0 left-0 right-0 z-[150] transition-all duration-300 ${scrolled || isOpen
+        ? 'bg-background/95 backdrop-blur-md shadow-lg'
+        : 'bg-gradient-to-b from-background/80 to-transparent'
         }`}
     >
-      <nav className="container mx-auto flex items-center h-16 px-4 gap-4">
+      <nav className="container mx-auto flex items-center h-16 px-4 gap-4 relative z-50">
         <Link href="/" className="flex items-center gap-3 shrink-0">
           <div className="relative w-12 h-12 md:w-14 md:h-14 shrink-0 drop-shadow-[0_0_15px_rgba(0,217,255,0.6)]">
             <Image
@@ -89,6 +92,7 @@ export default function Header() {
               <li key={item.href}>
                 <a
                   href={item.href}
+                  onClick={(e) => handleAnchorClick(e, item.href)}
                   className={`text-sm transition-colors ${isActive
                     ? 'text-primary font-semibold'
                     : 'hover:text-primary'
@@ -111,58 +115,32 @@ export default function Header() {
 
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="lg:hidden ml-auto flex flex-col gap-1.5 w-8 h-8 justify-center"
+          className="lg:hidden ml-auto relative z-10 flex flex-col justify-center items-center w-10 h-10 gap-[6px]"
           aria-label={isOpen ? 'Закрыть меню' : 'Открыть меню'}
           aria-expanded={isOpen}
         >
           <span
-            className={`block h-0.5 w-6 bg-text transition-all duration-300 ${isOpen ? 'translate-y-2 rotate-45' : ''
+            className={`block h-[2px] w-5 bg-text transition-transform duration-300 ${isOpen ? 'translate-y-[8px] rotate-45' : ''
               }`}
           />
           <span
-            className={`block h-0.5 w-6 bg-text transition-all duration-300 ${isOpen ? 'opacity-0' : ''
+            className={`block h-[2px] w-5 bg-text transition-transform duration-300 ${isOpen ? 'opacity-0' : 'opacity-100'
               }`}
           />
           <span
-            className={`block h-0.5 w-6 bg-text transition-all duration-300 ${isOpen ? '-translate-y-2 -rotate-45' : ''
+            className={`block h-[2px] w-5 bg-text transition-transform duration-300 ${isOpen ? '-translate-y-[8px] -rotate-45' : ''
               }`}
           />
         </button>
       </nav>
 
-      {/* Мобильное меню — всегда в DOM, плавно открывается/закрывается */}
-      <div
-        className={`lg:hidden bg-surface border-t border-white/10 overflow-hidden transition-all duration-300 ease-out ${isOpen
-          ? 'max-h-[500px] opacity-100'
-          : 'max-h-0 opacity-0 border-t-0'
-          }`}
-      >
-        <ul className="flex flex-col gap-4 px-4 py-4">
-          {NAV.map((item) => {
-            const isActive = activeSection === item.href.replace('#', '');
-            return (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`block text-lg transition-colors ${isActive ? 'text-primary font-semibold' : 'hover:text-primary'
-                    }`}
-                >
-                  {item.label}
-                </a>
-              </li>
-            );
-          })}
-          <li>
-            <a
-              href="tel:+79061744325"
-              className="block bg-primary text-background text-center py-3 rounded-full font-semibold"
-            >
-              Позвонить
-            </a>
-          </li>
-        </ul>
-      </div>
+      <MobileMenu
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        nav={NAV}
+        activeSection={activeSection}
+      />          
+      
     </header>
   );
 }
