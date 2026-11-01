@@ -386,7 +386,6 @@ a {
 /* === Защита от залипания hover === */
 @media (hover: hover) and (pointer: fine) {
   /* Tailwind автоматически оборачивает hover: в этот медиа-запрос */
-test/update-after-ux
 }
 
 /* === Анимация для модалки === */
