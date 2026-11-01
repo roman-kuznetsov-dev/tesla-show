@@ -15,12 +15,10 @@ export default function MobileMenu({ isOpen, onClose, nav, activeSection }: Prop
   const [mounted, setMounted] = useState(false);
   const handleAnchorClick = useAnchorTransition();
 
-  // Рендерим портал только после монтирования на клиенте
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Блокировка скролла страницы
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -35,7 +33,6 @@ export default function MobileMenu({ isOpen, onClose, nav, activeSection }: Prop
     };
   }, [isOpen]);
 
-  // Закрытие по Escape
   useEffect(() => {
     if (!isOpen) return;
     const handleEscape = (e: KeyboardEvent) => {
@@ -49,23 +46,21 @@ export default function MobileMenu({ isOpen, onClose, nav, activeSection }: Prop
 
   return createPortal(
     <div
+      data-testid="mobile-menu"
       className={`fixed inset-0 z-[100] lg:hidden transition-all duration-300 ${
-        isOpen ? 'pointer-events-auto' : 'pointer-events-none'
+        isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}
     >
-      {/* Затемнение фона */}
       <div
-        className={`absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300 ${
-          isOpen ? 'opacity-100' : 'opacity-0'
-        }`}
+        data-testid="mobile-menu-overlay"
+        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Панель меню — начинается под шапкой */}
       <div
-        className={`absolute top-16 left-0 right-0 bg-black/95 border-t border-white/10 overflow-y-auto transition-all duration-300 ease-out max-h-[calc(100vh-4rem)] ${
-          isOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'
+        className={`absolute top-16 left-0 right-0 bg-black/95 border-t border-white/10 overflow-y-auto max-h-[calc(100vh-4rem)] transition-transform duration-300 ease-out ${
+          isOpen ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
         <ul className="flex flex-col gap-4 px-4 py-6">
@@ -75,7 +70,9 @@ export default function MobileMenu({ isOpen, onClose, nav, activeSection }: Prop
               <li key={item.href}>
                 <a
                   href={item.href}
-                  onClick={(e) => handleAnchorClick(e, item.href, onClose)}
+                  onClick={(e) => {
+                    handleAnchorClick(e, item.href, onClose);
+                  }}
                   className={`block text-lg transition-colors ${
                     isActive ? 'text-primary font-semibold' : 'hover:text-primary'
                   }`}

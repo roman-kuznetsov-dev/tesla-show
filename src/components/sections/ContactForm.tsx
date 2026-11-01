@@ -114,6 +114,7 @@ export default function ContactForm() {
           </label>
           <input
             id="name"
+            data-testid="form-name"
             type="text"
             value={form.name}
             onChange={(e) => handleChange('name', e.target.value)}
@@ -133,6 +134,7 @@ export default function ContactForm() {
           </label>
           <input
             id="phone"
+            data-testid="form-phone"
             type="tel"
             maxLength={18}
             value={form.phone}
@@ -204,6 +206,7 @@ export default function ContactForm() {
 
         {/* Кнопка */}
         <button
+          data-testid="submit-lead"
           type="submit"
           disabled={status === 'loading'}
           className="w-full bg-primary text-background px-6 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-primary/90 hover:shadow-[0_0_30px_rgba(0,217,255,0.4)] hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"

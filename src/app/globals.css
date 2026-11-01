@@ -401,3 +401,8 @@ a {
 @media (hover: hover) and (pointer: fine) {
   /* Tailwind автоматически оборачивает hover: в этот медиа-запрос */
 }
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
