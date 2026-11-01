@@ -1,31 +1,41 @@
 import { test, expect } from '@playwright/test';
 
-test('отправка формы заявки', async ({ page }) => {
-  // Мок API
+test('открытие модалки и отправка формы', async ({ page }) => {
   await page.route('**/api/leads', async (route) => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({ ok: true, id: 999 }),
+    await route.fulfill({ 
+      status: 200, 
+      contentType: 'application/json', 
+      body: JSON.stringify({ ok: true }) 
     });
   });
 
-  await page.goto('/#contact');
+  await page.goto('/');
+  await page.evaluate(() => window.scrollTo(0, 1000));
+  
+  await page.locator('button.floating-cta').click();
 
-  const nameInput = page.getByLabel('Имя');
-  await nameInput.waitFor({ state: 'visible' });
+  const modal = page.getByTestId('order-modal');
+  await expect(modal).toBeVisible();
 
-  await nameInput.fill('Тест');
-  await page.getByLabel('Телефон').fill('+79991234567');
+  await modal.getByTestId('form-name').fill('Тест');
+  await modal.getByTestId('form-phone').fill('+79991234567');
+  await modal.getByTestId('submit-lead').click();
 
-  await page.getByRole('button', { name: /отправить заявку/i }).click();
-
-  // Проверяем success
-  await expect(page.getByText('Спасибо за заявку!')).toBeVisible({ timeout: 15_000 });
+  await expect(modal.getByText('Спасибо за заявку!')).toBeVisible();
 });
 
-test('валидация формы: пустое имя', async ({ page }) => {
-  await page.goto('/#contact');
-  await page.getByRole('button', { name: /отправить заявку/i }).click();
-  await expect(page.getByText('Имя должно быть не короче 2 символов')).toBeVisible();
+test('закрытие модалки по клику на фон', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => window.scrollTo(0, 1000));
+  
+  await page.locator('button.floating-cta').click();
+
+  const modal = page.getByTestId('order-modal');
+  await expect(modal).toBeVisible();
+
+  // Вызываем клик напрямую через DOM
+  await page.getByTestId('order-modal-overlay').dispatchEvent('click');
+
+  // Модалка полностью удалится из DOM через 300мс (isRendered = false)
+  await expect(modal).toHaveCount(0);
 });

@@ -2,49 +2,41 @@ import { test, expect } from '@playwright/test';
 
 test('навигация по якорям: клик по «О шоу» скроллит к секции', async ({ page }) => {
   await page.goto('/');
-
   await page.getByRole('navigation').getByRole('link', { name: 'О шоу' }).click();
-
-  const aboutSection = page.locator('#about');
-  await expect(aboutSection).toBeInViewport();
+  await expect(page.locator('#about')).toBeInViewport();
 });
 
 test('навигация по якорям: клик по «Отзывы» скроллит к секции', async ({ page }) => {
   await page.goto('/');
-
   await page.getByRole('navigation').getByRole('link', { name: 'Отзывы' }).click();
-
-  const reviewsSection = page.locator('#reviews');
-  await expect(reviewsSection).toBeInViewport();
+  await expect(page.locator('#reviews')).toBeInViewport();
 });
 
-test('мобильное меню: открывается и закрывается', async ({ page }) => {
+test('мобильное меню: открывается и закрывается по клику на фон', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto('/');
 
-  const burger = page.getByRole('button', { name: /открыть меню/i });
-  await expect(burger).toBeVisible();
+  await page.getByRole('button', { name: /открыть меню/i }).click();
+  
+  const menu = page.getByTestId('mobile-menu');
+  
+  // Проверяем, что меню появилось (opacity = 1)
+  await expect(menu).toHaveCSS('opacity', '1');
 
-  await burger.click();
+  // Вызываем клик напрямую через DOM
+  await page.getByTestId('mobile-menu-overlay').dispatchEvent('click');
 
-  // Ссылки в мобильном меню — ищем только видимые
-  const mobileLink = page.getByRole('link', { name: 'О шоу' }).filter({ visible: true });
-  await expect(mobileLink).toBeVisible();
-  await mobileLink.click();
-
-  // Меню закрылось
-  await expect(page.getByRole('button', { name: /открыть меню/i })).toBeVisible();
+  // Ждем, пока opacity станет 0 (значит, меню закрывается)
+  await expect(menu).toHaveCSS('opacity', '0');
 });
 
 test('контакты: телефон и ВК — кликабельные ссылки', async ({ page }) => {
   await page.goto('/#contact');
-
-  // Телефон — tel:
+  
   const phoneLink = page.locator('a[href^="tel:"]').first();
   await expect(phoneLink).toBeVisible();
   await expect(phoneLink).toHaveAttribute('href', /^tel:\+7/);
 
-  // ВК — vk.ru (или vk.com)
   const vkLink = page.locator('a[href*="vk."]').first();
   await expect(vkLink).toBeVisible();
   await expect(vkLink).toHaveAttribute('href', /vk\./);

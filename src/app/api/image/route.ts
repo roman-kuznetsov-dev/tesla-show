@@ -14,7 +14,7 @@ export async function GET(req: Request) {
   const q = Number(searchParams.get('q')) || 80;
 
   // Логируем, что приходит от Next.js
-  console.log('IMAGE ROUTE REQUEST:', { src, w, q });
+  console.warn('IMAGE ROUTE REQUEST:', { src, w, q });
 
   if (!src) {
     return new NextResponse('Forbidden: No source', { status: 403 });
@@ -50,7 +50,7 @@ export async function GET(req: Request) {
     let originalBuffer;
     try {
       originalBuffer = await fs.readFile(publicPath);
-    } catch (e) {
+    } catch {
       console.error('FILE NOT FOUND AT:', publicPath);
       throw new Error('File not found');
     }
@@ -71,8 +71,9 @@ export async function GET(req: Request) {
         'Cache-Control': 'public, max-age=31536000, immutable',
       },
     });
-  } catch (error: any) {
-    console.error('IMAGE OPTIMIZATION ERROR:', error.message);
-    return new NextResponse('Internal Server Error: ' + error.message, { status: 500 });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    console.error('IMAGE OPTIMIZATION ERROR:', message);
+    return new NextResponse('Internal Server Error: ' + message, { status: 500 });
   }
 }
