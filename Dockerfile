@@ -16,6 +16,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ENV PRISMA_ENGINES_MIRROR=https://registry.npmmirror.com/-/binary/prisma
+ENV PRISMA_BINARES_MIRROR=https://registry.npmmirror.com/-/binary/prisma
+
 # Генерируем Prisma Client
 RUN npx prisma generate
 
