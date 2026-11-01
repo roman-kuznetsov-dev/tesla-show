@@ -400,9 +400,12 @@ a {
 /* === Защита от залипания hover на тач-устройствах === */
 @media (hover: hover) and (pointer: fine) {
   /* Tailwind автоматически оборачивает hover: в этот медиа-запрос */
+test/update-after-ux
 }
 
 @keyframes slideUp {
   from { transform: translateY(100%); }
   to { transform: translateY(0); }
+
+main
 }
