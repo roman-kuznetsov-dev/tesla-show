@@ -21,6 +21,9 @@ export const metadata: Metadata = {
   metadataBase: new URL('http://localhost:3000'),
   title: 'Тесла шоу Без ПРОводов — электрическое шоу на праздник',
   description: 'Захватывающее Тесла-шоу с молниями. Музыка, свет и восторг гостей.',
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: 'Тесла шоу Без ПРОводов',
     description: 'Электрическое шоу с молниями на ваш праздник',
