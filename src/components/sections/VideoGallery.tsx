@@ -10,6 +10,7 @@ import Modal from '@/components/ui/Modal';
 import { useInView } from '@/hooks/useInView';
 import { videos, type Video } from '@/data/videos';
 import { galleryPhotos } from '@/data/gallery';
+import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 
 function VideoPoster({
   video,
@@ -58,9 +59,14 @@ export default function VideoGallery() {
   // Слайдер фото (для мобилки)
   const [emblaRef] = useEmblaCarousel({ loop: true, align: 'start' });
 
-  const openVideo = (video: Video) => setActiveVideo(video);
-  const closeVideo = () => setActiveVideo(null);
-
+  const openVideo = (video: Video) => {
+    document.body.classList.add('video-open');
+    setActiveVideo(video);
+  };  
+  const closeVideo = () => {
+    document.body.classList.remove('video-open');
+    setActiveVideo(null);
+  };
   const activeAspect = activeVideo?.orientation === 'portrait'
     ? 'max-h-[85vh] w-auto aspect-[9/16]'
     : 'w-full aspect-video';
@@ -210,6 +216,7 @@ export default function VideoGallery() {
           src: `/api/image?src=${encodeURIComponent(photo.src)}&w=1080&q=85`,
           alt: photo.alt,
          }))}
+         plugins={[Zoom]}
       />
     </section>
   );

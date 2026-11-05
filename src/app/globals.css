@@ -348,7 +348,7 @@ textarea:focus:not(:focus-visible) {
 /* === active === */
 button:active:not(:disabled),
 a:active {
-  transform: scale(0.95);
+  transform: scale(0.96);
 }
 
 /* === Transition для кнопок и ссылок === */
@@ -392,4 +392,11 @@ a {
 @keyframes slideUp {
   from { transform: translateY(100%); }
   to { transform: translateY(0); }
+}
+
+body.video-open .floating-cta,
+body.video-open button[aria-label="Наверх"] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.2s ease-out;
 }
