@@ -400,3 +400,11 @@ body.video-open button[aria-label="Наверх"] {
   pointer-events: none !important;
   transition: opacity 0.2s ease-out;
 }
+
+@supports not (backdrop-filter: blur(1px)) {
+  .backdrop-blur-md,
+  .backdrop-blur-sm,
+  .backdrop-blur-xl {
+    background-color: rgba(0, 0, 0, 0.9);
+  }
+}
