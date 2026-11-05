@@ -78,7 +78,11 @@ export default function Contacts() {
                 />
               </div>
               <p className="text-muted text-sm uppercase tracking-widest mb-2">Написать</p>
-              <p className="font-heading text-xl md:text-2xl font-bold">{contacts.vk.display}</p>
+              <p className="font-heading text-lg md:text-2xl font-bold">
+                {contacts.vk.displayPart1}
+                <br />
+                {contacts.vk.displayPart2}
+              </p>
             </a>
           </div>
         </div>

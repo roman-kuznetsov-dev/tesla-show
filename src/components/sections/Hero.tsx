@@ -86,7 +86,7 @@ export default function Hero() {
       />  
 
       {/* Контент */}
-      <div className="relative z-10 container mx-auto px-4 text-center">
+      <div className="relative z-10 container mx-auto px-4 text-center pb-20 md:pb-0">
         <h1 className="hero-fade hero-fade-1 font-heading text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
           Тесла шоу - это
           <br />

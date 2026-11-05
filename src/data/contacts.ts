@@ -5,6 +5,8 @@ export const contacts = {
   },
   vk: {
     display: 'vk.ru/bez.provodov.show',
+    displayPart1: 'vk.ru/',
+    displayPart2: 'bez.provodov.show',
     href: 'https://vk.ru/bez.provodov.show',
   },
 };
