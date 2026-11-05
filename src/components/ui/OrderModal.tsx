@@ -106,7 +106,7 @@ export default function OrderModal({ isOpen, onClose }: Props) {
               </div>
               <div className="min-w-0">
                 <p className="text-muted text-xs uppercase tracking-widest mb-1">Написать</p>
-                <p className="font-heading text-lg md:text-xl font-bold break-all">{contacts.vk.display}</p>
+                <p className="font-heading text-lg md:text-xl font-bold whitespace-nowrap overflow-hidden text-ellipsis">{contacts.vk.display}</p>
               </div>
             </a>
           </div>
