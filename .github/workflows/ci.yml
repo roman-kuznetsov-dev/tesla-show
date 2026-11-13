@@ -19,6 +19,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
           
 
       - name: Install dependencies
@@ -58,12 +60,4 @@ jobs:
           NEXT_PUBLIC_SITE_URL: 'http://localhost:3000'
         run: npx playwright test
 
-      - name: Build Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: false
-          tags: tesla-show:test
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
                
