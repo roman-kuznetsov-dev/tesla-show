@@ -13,7 +13,7 @@ export const leadSchema = z.object({
   date: z.string().optional().or(z.literal('')),
   eventType: z.string().optional().or(z.literal('')),
   message: z.string().max(500, 'Комментарий слишком длинный').optional().or(z.literal('')),
-  idempotencyKey: z.string().uuid('Некорректный idempotencyKey'),
+  idempotencyKey: z.string().min(10, 'Слишком короткий idempotencyKey').max(100),
 });
 
 export type LeadInput = z.infer<typeof leadSchema>;
