@@ -1,6 +1,5 @@
 generator client {
-  provider = "prisma-client"
-  output = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -8,11 +7,63 @@ datasource db {
 }
 
 model Lead {
+  id             Int      @id @default(autoincrement())
+  name           String
+  phone          String
+  date           String?
+  eventType      String?
+  message        String?
+  status         String   @default("new") // new, in_progress, done
+  idempotencyKey String?  @unique
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  quizAnswers QuizAnswer[]
+
+  @@index([createdAt])
+  @@index([status])
+}
+
+model Quiz {
   id        Int      @id @default(autoincrement())
-  name      String
-  phone     String
-  date      String?
-  eventType String?
-  message   String?
+  slug      String   @unique // например "main-quiz"
+  title     String
   createdAt DateTime @default(now())
+
+  answers QuizAnswer[]
+}
+
+model QuizAnswer {
+  id         Int      @id @default(autoincrement())
+  leadId     Int
+  quizId     Int
+  questionId String   // ID вопроса из JSON
+  answer     String   // JSON строка с ответом
+  createdAt  DateTime @default(now())
+
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  quiz Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@index([quizId])
+}
+
+model QuizStepEvent {
+  id        Int      @id @default(autoincrement())
+  quizId    Int
+  stepId    String
+  action    String   // view, answer, drop
+  createdAt DateTime @default(now())
+
+  @@index([quizId, stepId, action])
+  @@index([createdAt])
+}
+
+model AdminSession {
+  id        String   @id @default(uuid())
+  userId    String
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([expiresAt])
 }
