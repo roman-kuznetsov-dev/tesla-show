@@ -114,7 +114,7 @@ export default function Quiz() {
       dispatch({ type: 'SUBMIT_SUCCESS' });
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Неизвестная ошибка';
-      dispatch({ type: 'SUBMIT_ERROR', message: err.message });
+      dispatch({ type: 'SUBMIT_ERROR', message });
     }
   };
 

@@ -5,6 +5,9 @@ export async function createLead(data: LeadInput) {
   // 1. Проверка на идемпотентность
   const existingLead = await prisma.lead.findUnique({
     where: { idempotencyKey: data.idempotencyKey },
+    include: {
+      quizAnswers: true,
+    },
   });
 
   if (existingLead) {
