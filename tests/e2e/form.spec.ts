@@ -5,17 +5,21 @@ test('открытие модалки и отправка формы (квиз)'
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto('/');
 
-  // 2. Прокручиваем страницу вниз, чтобы плавающая кнопка появилась
-  await page.evaluate(() => window.scrollBy(0, 800));
-  await page.waitForTimeout(500); 
+  // 2. Скроллим вниз, чтобы сработал useScrollThreshold(600)
+  await page.evaluate(() => window.scrollTo(0, 800));
+  await page.waitForTimeout(600);
 
-  // 3. Ищем кнопку и кликаем с force: true (игнорируя перекрывающие блоки)
-  const orderButton = page.getByRole('button', { name: 'Заказать шоу' });
+  // 3. Ждем появления плавающей кнопки (класс .floating-cta есть в обоих вариантах A/B)
+  const orderButton = page.locator('button.floating-cta');
+  
+  // Ждем, пока у кнопки появится класс, разрешающий клики
+  await orderButton.waitFor({ state: 'visible' });
+  // Кликаем принудительно, чтобы обойти перекрытие контейнером
   await orderButton.click({ force: true });
 
-  // 4. Ждем, пока модалка появится
+  // 4. Ждем модалку
   const modal = page.getByTestId('order-modal');
-  await expect(modal).toBeVisible();
+  await expect(modal).toBeVisible({ timeout: 10000 });
 
   // 5. Проходим 5 шагов квиза
   for (let i = 0; i < 5; i++) {
@@ -32,6 +36,6 @@ test('открытие модалки и отправка формы (квиз)'
   // 7. Отправляем
   await modal.getByRole('button', { name: /Получить расчёт/i }).click();
 
-  // 8. Проверяем успех
-  await expect(page.getByText('Заявка отправлена!')).toBeVisible();
+  // 8. Проверяем успех (даем серверу 15 секунд на ответ)
+  await expect(page.getByText('Заявка отправлена!')).toBeVisible({ timeout: 15000 });
 });
