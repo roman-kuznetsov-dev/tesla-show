@@ -30,16 +30,27 @@ export async function POST(req: Request) {
 
     // Если это дубль — не отправляем в Telegram повторно
     if (!isDuplicate) {
+      // Формируем красивый текст с ответами (если они есть)
+      let answersText = '';
+      if (lead.quizAnswers && lead.quizAnswers.length > 0) {
+        answersText = '\n<b>Ответы квиза:</b>\n' + lead.quizAnswers
+          .map((ans) => `• ${ans.questionId}: ${ans.answer}`)
+          .join('\n');
+      }
+
       const telegramText = `
 <b>🎉 Новая заявка на Тесла-шоу!</b>
 
 <b>Имя:</b> ${lead.name}
 <b>Телефон:</b> ${lead.phone}
-${lead.date ? `<b>Дата:</b> ${lead.date}\n` : ''}${lead.eventType ? `<b>Тип события:</b> ${lead.eventType}\n` : ''}${lead.message ? `<b>Комментарий:</b> ${lead.message}\n` : ''}
+${lead.date ? `<b>Дата:</b> ${lead.date}\n` : ''}${lead.eventType ? `<b>Тип события:</b> ${lead.eventType}\n` : ''}${answersText}
 <b>ID заявки:</b> ${lead.id}
       `.trim();
 
-      await sendTelegramMessage({ text: telegramText });
+      // Отправляем в Telegram (не блокируя ответ клиенту)
+      sendTelegramMessage({ text: telegramText }).catch((err) =>
+        console.error('[API /leads] Ошибка Telegram:', err)
+      );
     }
 
     return NextResponse.json({
@@ -74,6 +85,9 @@ export async function GET(req: Request) {
   try {
     const leads = await prisma.lead.findMany({
       orderBy: { createdAt: 'desc' },
+      include: {
+        quizAnswers: true, // 👈 Теперь подтягиваем ответы квиза
+      },
     });
     return NextResponse.json({ ok: true, count: leads.length, leads });
   } catch (error) {

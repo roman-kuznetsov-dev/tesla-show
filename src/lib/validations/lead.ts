@@ -1,5 +1,11 @@
 import { z } from 'zod';
 
+export const quizAnswerSchema = z.object({
+  questionId: z.string(),
+  answer: z.string(),
+  order: z.number(),
+});
+
 export const leadSchema = z.object({
   name: z
     .string()
@@ -14,6 +20,8 @@ export const leadSchema = z.object({
   eventType: z.string().optional().or(z.literal('')),
   message: z.string().max(500, 'Комментарий слишком длинный').optional().or(z.literal('')),
   idempotencyKey: z.string().min(10, 'Слишком короткий idempotencyKey').max(100),
+  answers: z.array(quizAnswerSchema).optional(),
 });
 
 export type LeadInput = z.infer<typeof leadSchema>;
+export type QuizAnswerInput = z.infer<typeof quizAnswerSchema>;

@@ -52,7 +52,15 @@ jobs:
 
       - name: Install Playwright Chromium
         run: npx playwright install chromium      
-        
+
+      - name: Setup Database & Migrations
+        env:
+          NEXT_PUBLIC_ENABLE_LEADS: 'true'
+        run: |
+          npx prisma migrate deploy
+          echo "NEXT_PUBLIC_ENABLE_LEADS=true" > .env
+          echo "NEXT_PUBLIC_SITE_URL=http://localhost:3000" >> .env
+          echo "ADMIN_PASSWORD=test123" >> .env    
 
       - name: Run E2E tests
         env:

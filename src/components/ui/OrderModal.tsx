@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { X, Phone, MessageCircle } from 'lucide-react';
-import ContactForm from '@/components/sections/ContactForm';
+import Quiz from '@/components/sections/Quiz';
 import { contacts } from '@/data/contacts';
 
 type Props = {
@@ -15,20 +15,24 @@ export default function OrderModal({ isOpen, onClose }: Props) {
   const [isRendered, setIsRendered] = useState(isOpen);
   const [animateIn, setAnimateIn] = useState(false);
 
-  // Плавное появление и удаление
+  // 1. Плавное появление и удаление
   useEffect(() => {
     if (isOpen) {
       setIsRendered(true);
-      // Небольшая задержка, чтобы браузер отрисовал начальное состояние (translate-y-full)
-      setTimeout(() => setAnimateIn(true), 10);
+      // Двойной requestAnimationFrame для надежной анимации
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setAnimateIn(true);
+        });
+      });
     } else {
       setAnimateIn(false);
-      // Ждем 300мс (длительность анимации) и удаляем из DOM
       const timer = setTimeout(() => setIsRendered(false), 300);
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
 
+  // 2. Блокировка скролла
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -43,6 +47,7 @@ export default function OrderModal({ isOpen, onClose }: Props) {
     };
   }, [isOpen]);
 
+  // 3. Закрытие по Escape
   useEffect(() => {
     if (!isOpen) return;
     const handleEscape = (e: KeyboardEvent) => {
@@ -87,7 +92,7 @@ export default function OrderModal({ isOpen, onClose }: Props) {
         </h2>
 
         {leadsEnabled ? (
-          <ContactForm />
+          <Quiz />
         ) : (
           <div className="space-y-4 py-8 flex flex-col justify-center min-h-[50vh]">
             <a href={contacts.phone.href} className="group flex items-center gap-4 bg-background/50 border border-white/10 rounded-2xl p-5 md:p-6 transition-all duration-300 hover:border-primary/40 hover:bg-background/80">
