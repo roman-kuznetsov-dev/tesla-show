@@ -112,7 +112,8 @@ export default function Quiz() {
       if (!res.ok) throw new Error(data.error || 'Ошибка сервера');
 
       dispatch({ type: 'SUBMIT_SUCCESS' });
-    } catch (err: any) {
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Неизвестная ошибка';
       dispatch({ type: 'SUBMIT_ERROR', message: err.message });
     }
   };
