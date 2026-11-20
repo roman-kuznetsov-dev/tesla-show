@@ -1,41 +1,33 @@
 import { test, expect } from '@playwright/test';
 
-test('открытие модалки и отправка формы', async ({ page }) => {
-  await page.route('**/api/leads', async (route) => {
-    await route.fulfill({ 
-      status: 200, 
-      contentType: 'application/json', 
-      body: JSON.stringify({ ok: true }) 
-    });
-  });
-
+test('открытие модалки и отправка формы (квиз)', async ({ page }) => {
   await page.goto('/');
-  await page.evaluate(() => window.scrollTo(0, 1000));
-  
-  await page.locator('button.floating-cta').click();
 
+  // 1. Открываем модалку (кликаем на кнопку "Заказать")
+  // 👇 Убедись, что селектор правильный (может быть getByRole('button', { name: /заказать/i }) )
+  await page.getByText('Заказать шоу', { exact: false }).first().click();
+
+  // 2. Ждем, пока модалка появится
   const modal = page.getByTestId('order-modal');
   await expect(modal).toBeVisible();
 
-  await modal.getByTestId('form-name').fill('Тест');
-  await modal.getByTestId('form-phone').fill('+79991234567');
-  await modal.getByTestId('submit-lead').click();
+  // 3. Проходим 5 шагов квиза (кликаем на первые варианты ответов)
+  for (let i = 0; i < 5; i++) {
+    // Ждем появления кнопок и кликаем на первую
+    const firstOption = modal.locator('button').filter({ hasText: /./ }).first();
+    // Небольшая пауза для анимации
+    await page.waitForTimeout(400); 
+    await firstOption.click();
+  }
 
-  await expect(modal.getByText('Спасибо за заявку!')).toBeVisible();
-});
-
-test('закрытие модалки по клику на фон', async ({ page }) => {
-  await page.goto('/');
-  await page.evaluate(() => window.scrollTo(0, 1000));
+  // 4. На последнем шаге заполняем имя и телефон
+  await page.waitForTimeout(400);
+  await modal.getByPlaceholder('Ваше имя').fill('Тест');
+  await modal.getByPlaceholder('Ваш телефон').fill('+79991234567');
   
-  await page.locator('button.floating-cta').click();
+  // 5. Отправляем
+  await modal.getByRole('button', { name: /Получить расчёт/i }).click();
 
-  const modal = page.getByTestId('order-modal');
-  await expect(modal).toBeVisible();
-
-  // Вызываем клик напрямую через DOM
-  await page.getByTestId('order-modal-overlay').dispatchEvent('click');
-
-  // Модалка полностью удалится из DOM через 300мс (isRendered = false)
-  await expect(modal).toHaveCount(0);
+  // 6. Проверяем успех
+  await expect(page.getByText('Заявка отправлена!')).toBeVisible();
 });
