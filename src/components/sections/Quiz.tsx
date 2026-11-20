@@ -98,7 +98,7 @@ export default function Quiz() {
       const body = {
         name: state.name,
         phone: state.phone,
-        message: JSON.stringify(state.answers), // Пока шлем ответы строкой в message
+        answers: answersArray,
         idempotencyKey: crypto.randomUUID(), // Генерируем UUID
       };
 
