@@ -68,3 +68,11 @@ model AdminSession {
 
   @@index([expiresAt])
 }
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+}
