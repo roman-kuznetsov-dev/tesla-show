@@ -17,7 +17,7 @@ export async function middleware(req: NextRequest) {
       // 👈 Проверяем подпись токена!
       const secret = new TextEncoder().encode(process.env.ADMIN_JWT_SECRET);
       await jwtVerify(token, secret);
-    } catch (error) {
+    } catch {
       // Если токен подделан или просрочен — удаляем куку и на логин
       const response = NextResponse.redirect(new URL('/admin/login', req.url));
       response.cookies.delete('admin_session');

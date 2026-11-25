@@ -36,6 +36,7 @@ jobs:
         env:
           NEXT_PUBLIC_ENABLE_LEADS: 'true'
           NEXT_PUBLIC_SITE_URL: 'http://localhost:3000'
+          ADMIN_JWT_SECRET: 'dummy-secret-for-build-only-1234567890'
         run: npm run build
 
       - name: Run unit tests
