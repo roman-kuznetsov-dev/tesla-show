@@ -26,13 +26,12 @@ export async function POST(req: Request) {
 
     const response = NextResponse.json({ ok: true });
     
-    // 👇 Устанавливаем куку напрямую через response.cookies
     response.cookies.set({
       name: 'admin_session',
       value: token,
-      httpOnly: true,
-      secure: false, // 👈 ВАЖНО: на localhost (http) должно быть false
-      sameSite: 'lax',
+      httpOnly: true, // 👈 ЗАЩИТА ОТ XSS (JS не может украсть токен)
+      secure: process.env.NODE_ENV === 'production', // 👈 true на проде (HTTPS), false локально
+      sameSite: 'lax', // 👈 Защита от CSRF
       maxAge: 60 * 60 * 24 * 7, // 7 дней
       path: '/',
     });
