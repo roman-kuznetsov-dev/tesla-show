@@ -29,9 +29,8 @@ export default function AdminLoginPage() {
         throw new Error(data.error || 'Ошибка входа');
       }
 
-      // Успех — редирект на дашборд
-      router.push('/admin');
-      router.refresh(); // Обновляем состояние middleware
+      // Жесткий редирект
+      window.location.href = '/admin';
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Неизвестная ошибка');
     } finally {

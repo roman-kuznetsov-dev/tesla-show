@@ -8,44 +8,30 @@ export async function POST(req: Request) {
     const { email, password } = await req.json();
 
     if (!email || !password) {
-      return NextResponse.json(
-        { error: 'Укажите email и пароль' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Укажите email и пароль' }, { status: 400 });
     }
 
-    // 1. Ищем админа по email
-    const admin = await prisma.adminUser.findUnique({
-      where: { email },
-    });
+    const admin = await prisma.adminUser.findUnique({ where: { email } });
 
     if (!admin) {
-      return NextResponse.json(
-        { error: 'Неверный email или пароль' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Неверный email или пароль' }, { status: 401 });
     }
 
-    // 2. Сравниваем пароль с хешем в БД
     const isValid = await bcrypt.compare(password, admin.passwordHash);
     if (!isValid) {
-      return NextResponse.json(
-        { error: 'Неверный email или пароль' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Неверный email или пароль' }, { status: 401 });
     }
 
-    // 3. Создаем JWT-сессию
-    const token = await createSession({
-      sub: admin.id,
-      email: admin.email,
-    });
+    const token = await createSession({ sub: admin.id, email: admin.email });
 
-    // 4. Ставим httpOnly cookie
     const response = NextResponse.json({ ok: true });
-    response.cookies.set('admin_session', token, {
-      httpOnly: true, // Недоступно для JS (защита от XSS)
-      secure: process.env.NODE_ENV === 'production', // Только по HTTPS в проде
+    
+    // 👇 Устанавливаем куку напрямую через response.cookies
+    response.cookies.set({
+      name: 'admin_session',
+      value: token,
+      httpOnly: true,
+      secure: false, // 👈 ВАЖНО: на localhost (http) должно быть false
       sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 7, // 7 дней
       path: '/',
@@ -54,9 +40,6 @@ export async function POST(req: Request) {
     return response;
   } catch (error) {
     console.error('[Admin Login] Ошибка:', error);
-    return NextResponse.json(
-      { error: 'Внутренняя ошибка сервера' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Внутренняя ошибка сервера' }, { status: 500 });
   }
 }
